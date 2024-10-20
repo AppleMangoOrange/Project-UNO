@@ -39,18 +39,23 @@ class Wild(Enum):
 
 # Struct of cards holding the card colour and value
 class Card:
-    def __init__(self, colour, num):
+    def __init__(self, colour, number):
         self.colour = colour
-        self.num = num
+        self.number = number
 
     def __str__(self):
         # Both forms are correct: 
-        return f"{self.colour.name}, {self.num.name}"
+        return f"{self.colour.name}, {self.number.name}"
         # return "{colour}, {num}".format(
         #     colour = self.colour.name,
-        #     num = self.num.name,
+        #     num = self.number.name,
         # )
 
+def print_cards(stack: list):
+    return [str(card) for card in stack]
+
+def sort_cards(stack: list):
+    stack.sort(key=lambda card: (card.colour.value, -card.number.value))
 
 '''
 Returns the sorted original deck of UNO cards in a list as
@@ -61,11 +66,11 @@ corresponding UNO cards
 def create_deck(printing: bool=False):
     original_deck = []
 
-    for col in list(Colours)[1:]:
-        for num in Numbers:
-            card = Card(col, num)
+    for colour in list(Colours)[1:]:
+        for number in Numbers:
+            card = Card(colour, number)
             original_deck.append(card)
-            if num != Numbers.ZERO:
+            if number != Numbers.ZERO:
                 original_deck.append(card)
             #     print("Just appended: ", original_deck[-1], "*2")
             # else:
@@ -76,7 +81,8 @@ def create_deck(printing: bool=False):
             original_deck.append(Card(Colours.BLACK, wild_card))
             # print("Just appended: ", original_deck[-1])
 
-    original_deck.sort(key=lambda card: (100*card.colour.value - card.num.value))
+    # original_deck.sort(key=lambda card: (card.colour.value, -card.number.value))
+    sort_cards(original_deck)
     if printing == False:
         return original_deck
     else:
@@ -84,8 +90,11 @@ def create_deck(printing: bool=False):
 
 
 if __name__ == '__main__':
-    import random
-    # Copy the original deck and shuffle the copy
-    playing_deck = OriginalDeck()
-    random.shuffle(playing_deck)
-    print("Playing Deck: ", [str(item) for item in playing_deck])
+    # Example card:
+    c = Card(Colours.BLUE, Numbers.FOUR)
+    print(c.colour, c.number)
+
+    # Example deck:
+    original_deck = create_deck()
+    print("Playing Deck: ", print_cards(original_deck))
+    print("Number of UNO cards:", len(original_deck))

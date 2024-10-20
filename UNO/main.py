@@ -21,3 +21,29 @@ If caught, penalty applies. If not caught, no penalty.
 '''
 
 
+import random
+
+import deck
+import hands
+
+
+# Returns the player number who has won, and 0 if no one has won
+def win_condition():
+    # TODO: build win condition
+    return 0
+
+
+number_of_players = hands.get_number_players()
+
+# Copy the original deck and shuffle the copy
+playing_deck = deck.create_deck()
+random.shuffle(playing_deck)
+# print("Playing Deck: ", [str(item) for item in playing_deck])
+
+player_hands = hands.distribute_player_hands(number_of_players, playing_deck)
+
+discard_pile = []
+# Add topmost card of playing deck to discard pile
+discard_pile.append(playing_deck.pop(-1))
+
+
